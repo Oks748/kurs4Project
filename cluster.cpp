@@ -1,4 +1,5 @@
 #include "cluster.h"
+#include <math.h>
 
 cluster::cluster(){}
 //--------------------------------------------------------------------------
@@ -45,11 +46,6 @@ P cluster::vectorization(Bitmap^ pict)
 	unsigned int numbArrI = 0, numbArrJ = 0; //numeracija aarrs
 	unsigned int counter = 0;
 	
-	///////////////////////////////////////
-	//diapazon pixeliv--------------!!!!!!!
-	///////////////////////////////////////
-
-
 	// зполнение первой половины массива по диагонали, зигзагом, начиная
 	// слева и сверху, заканчивая  побочной диагональю
 	for (unsigned int diag = 0; diag < 10; diag++) // выполняем проход по диагоналям
@@ -68,7 +64,7 @@ P cluster::vectorization(Bitmap^ pict)
 				for (unsigned int x = xWbegin; x < xWend; x++)
 					for (unsigned int y = yHbegin; y < yWend; y++)
 					{ //[x][y] |||| 0->BLACK   255->WHITE
-						if (pict->GetPixel(x,y) == Color::FromArgb(0, 0, 0, 0))
+						if (pict->GetPixel(x,y) == Color::FromArgb(0, 0, 0))
 							counter++; //if black pixel
 					}
 				vectP.x.push_back(counter);
@@ -90,7 +86,7 @@ P cluster::vectorization(Bitmap^ pict)
 				for (unsigned int x = xWbegin; x < xWend; x++)
 					for (unsigned int y = yHbegin; y < yWend; y++)
 					{ //[x][y] |||| 0->BLACK   255->WHITE
-						if (pict->GetPixel(x, y) == Color::FromArgb(0, 0, 0, 0))
+						if (pict->GetPixel(x, y) == Color::FromArgb(0, 0, 0))
 							counter++; //if black pixel
 					}
 				vectP.x.push_back(counter);
@@ -123,7 +119,7 @@ P cluster::vectorization(Bitmap^ pict)
 				for (unsigned int x = xWbegin; x < xWend; x++)
 					for (unsigned int y = yHbegin; y < yWend; y++)
 					{ //[x][y] |||| 0->BLACK   255->WHITE
-						if (pict->GetPixel(x, y) == Color::FromArgb(0, 0, 0, 0))
+						if (pict->GetPixel(x, y) == Color::FromArgb(0, 0, 0))
 							counter++; //if black pixel
 					}
 				vectP.x.push_back(counter);
@@ -147,7 +143,7 @@ P cluster::vectorization(Bitmap^ pict)
 				for (unsigned int x = xWbegin; x < xWend; x++)
 					for (unsigned int y = yHbegin; y < yWend; y++)
 					{ //[x][y] |||| 0->BLACK   255->WHITE
-						if (pict->GetPixel(x, y) == Color::FromArgb(0, 0, 0, 0))
+						if (pict->GetPixel(x, y) == Color::FromArgb(0, 0, 0))
 							counter++; //if black pixel
 					}
 				vectP.x.push_back(counter);
@@ -186,17 +182,7 @@ void cluster::choosecenters()
 				}//vsi x[i] spivpadajut
 			}
 		} while (t);
-	}//cykl po centrah
-
-	
-	/*	Messages->Lines->Add("Кількість точок " + IntToStr(koord.size()));
-		Messages->Lines->Add("Початкові центри");
-		for (unsigned int j = 0; j < k; j++)//vyvid pochatkovyh centriv
-		{
-			String sdf = IntToStr(j + 1) + "(" + centry[j].x[0] + "," + centry[j].x[1] + ")";
-			Messages->Lines->Add(sdf);
-		}
-	*/	
+	}//cykl po centrah	
 }
 //--------------------------------------------------------------------------
 float cluster::dosqrt(P ks, P kd) //koordynaty  v tochkah
@@ -276,7 +262,6 @@ void cluster::centermass()
 		kser.clear();
 		bindpoints();
 	}
-	else return;
 }
 //-------------algorithm k-nearest neighbours 1 tochka----------------------
 void cluster::kNearest()
@@ -284,6 +269,7 @@ void cluster::kNearest()
 	//vidstani.resize();
 	for (unsigned int g = 0; g < k; g++)//po vsim klasteram
 	{
+		
 		for (unsigned int j = 0; j < kser[g].size(); j++)//po vsim tochkam klasteru
 		{
 			vids pp;//perekydna komirka
@@ -301,7 +287,7 @@ void cluster::kNearest()
 				float tmp = vidstani[i].distance;
 				vidstani[i].distance = vidstani[j].distance;
 				vidstani[j].distance = tmp;
-				int tmp2 = vidstani[i].gg;
+				unsigned int tmp2 = vidstani[i].gg;
 				vidstani[i].gg = vidstani[j].gg;
 				vidstani[j].gg = tmp2;
 
@@ -314,16 +300,7 @@ void cluster::kNearest()
 		int gg2 = vidstani[d].gg;
 		lichylnyk[gg2]++;// kser[g]+ golos
 	}
-	//vyvid golosiv
-	/*if (Sheets->ActivePage == dimension2)
-	{
-		Messages->Lines->Add("-------------------");
-		Messages->Lines->Add("Голоси");
-		for (unsigned int j = 0; j < lichylnyk.size(); j++)//vyvid pochatkovyh centriv
-		{
-			Messages->Lines->Add(IntToStr(lichylnyk[j]) + "_");
-		}
-	}
+	
 	unsigned int maxgolos = lichylnyk[0];
 	ki = 0;
 	for (unsigned int g = 0; g < lichylnyk.size(); g++)
@@ -333,9 +310,8 @@ void cluster::kNearest()
 			maxgolos = lichylnyk[g];
 			ki = g;// indeks maxgolos  | jakyj klaster
 		}
-	}*/
+	}
 	//zanesennja tochky v klaster
-	//pointkNN.colour = kser[ki][0].colour;
 	kser[ki].push_back(pointkNN);
 	lichylnyk.clear();
 	vidstani.clear();

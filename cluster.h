@@ -3,7 +3,7 @@
 using namespace System::Drawing;
 
 class P { public: std::vector<unsigned int> x; std::string pathToFile;};
-class vids { public: float distance; int gg; };//dlja vidstanej
+class vids { public: float distance; unsigned int gg; };//dlja vidstanej
 
 class cluster
 {
