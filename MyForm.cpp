@@ -42,7 +42,6 @@ System::Void kursProject::MyForm::btnOverview_Click(System::Object ^ sender, Sys
 			}
 		}
 		my.n = 100; //dimension
-		my.k = 2; //amount of clusters
 		my.np = nnp; //number of point
 	}
 }
