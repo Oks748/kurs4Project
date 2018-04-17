@@ -2,6 +2,7 @@
 #include "cluster.h"
 #include <msclr\marshal_cppstd.h>
 using namespace kursProject;
+using namespace System::IO;
 cluster my;
 
 [STAThread]
@@ -19,12 +20,23 @@ System::Void kursProject::MyForm::btnOverview_Click(System::Object ^ sender, Sys
 {
 	if (openFileDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK)
 	{
+		DataGridViewTextBoxColumn^ str = gcnew DataGridViewTextBoxColumn();
+		DataGridViewImageColumn^ img = gcnew DataGridViewImageColumn();
+		img->ImageLayout = DataGridViewImageCellLayout::Zoom;
+		img->Width = 360;
+		str->Width = 100;
+		dataGridView1->Columns->Add(str);
+		dataGridView1->Columns->Add(img);
+	
 		unsigned int nnp = 0;
 		for each(String^ file in openFileDialog1->FileNames)
 		{
-			textBox1->Text = textBox1->Text + "\r\n" + file;
+			textBox1->Text = textBox1->Text + "\r\n" + Path::GetFileName(file);
 			Bitmap^ bitPict = gcnew Bitmap(file);
-
+			
+			dataGridView1->Rows->Add(Path::GetFileName(file), bitPict);
+			
+			/*
 			Bitmap^ bbb = my.toGrayScale(bitPict);
 			//textBox1->Text = textBox1->Text + "\r\n" + bbb->Height+"_"+bbb->Width;
 
@@ -41,7 +53,7 @@ System::Void kursProject::MyForm::btnOverview_Click(System::Object ^ sender, Sys
 			for(unsigned int i = 0; i < 100; i++)
 			{
 				textBox1->Text = textBox1->Text + "_" + vectP.x[i];
-			}
+			}*/
 		}
 		my.n = 100; //dimension
 

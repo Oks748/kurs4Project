@@ -19,6 +19,10 @@ Bitmap^ cluster::toGrayScale(Bitmap^ bitPict)
 			//find average
 			int avg = 0.299*r + 0.587*g + 0.114*b;
 
+
+			if (avg < 128) avg = 0;
+			else avg = 255;
+
 			//set new pixel value
 			picture->SetPixel(x, y, Color::FromArgb(a, avg, avg, avg));
 		}
@@ -41,6 +45,11 @@ P cluster::vectorization(Bitmap^ pict)
 	unsigned int numbArrI = 0, numbArrJ = 0; //numeracija aarrs
 	unsigned int counter = 0;
 	
+	///////////////////////////////////////
+	//diapazon pixeliv--------------!!!!!!!
+	///////////////////////////////////////
+
+
 	// зполнение первой половины массива по диагонали, зигзагом, начиная
 	// слева и сверху, заканчивая  побочной диагональю
 	for (unsigned int diag = 0; diag < 10; diag++) // выполняем проход по диагоналям
@@ -50,7 +59,7 @@ P cluster::vectorization(Bitmap^ pict)
 			numbArrI = 0; // х-координата первого лемента массива на диагонали - diag
 			numbArrJ = diag; // у-координата элемента массива на диагонали - diag
 
-			while (numbArrJ >= 0) // пока y-координата находится в верхней части диагонали
+			while (numbArrJ >= 0 && numbArrJ < 10) // пока y-координата находится в верхней части диагонали
 			{
 				xWbegin = numbArrI * pW, xWend = numbArrI * pW + pW;
 				yHbegin = numbArrJ * pH, yWend = numbArrJ * pH + pH;
@@ -65,14 +74,14 @@ P cluster::vectorization(Bitmap^ pict)
 				vectP.x.push_back(counter);
 				
 				numbArrI++;     // по горизонтали, смещаемся влево
-				numbArrJ--;    // по вертикали, смещаемся вниз
+				numbArrJ--;    // по вертикали, смещаемся вниз------------------------&&&&&&&&&&&&&&&
 			}
 		}
 		else // по нечетным диагоналям
 		{
 			numbArrI = diag; // х-координата элемента массива на диагонали - diag
 			numbArrJ = 0; // у-координата первого элемента массива на диагонали - diag
-			while (numbArrI >= 0) // пока x-координата находится в левой части диагонали
+			while (numbArrI >= 0 && numbArrI < 10) // пока x-координата находится в левой части диагонали
 			{
 				xWbegin = numbArrI * pW, xWend = numbArrI * pW + pW;
 				yHbegin = numbArrJ * pH, yWend = numbArrJ * pH + pH;
@@ -105,7 +114,7 @@ P cluster::vectorization(Bitmap^ pict)
 			numbArrI = 9; // х-координата первого элемента массива на диагонали - diag
 			numbArrJ = diag;  // у-координата элемента массива на диагонали - diag
 
-			while (numbArrJ <= 9) // Пока не кончилась диагональ
+			while (numbArrJ <= 9 && numbArrJ > 0) // Пока не кончилась диагональ
 			{
 				xWbegin = numbArrI * pW, xWend = numbArrI * pW + pW;
 				yHbegin = numbArrJ * pH, yWend = numbArrJ * pH + pH;
@@ -127,10 +136,12 @@ P cluster::vectorization(Bitmap^ pict)
 			numbArrI = diag; // х-координата первого элемента к-ой диагонали
 			numbArrJ = 9;  // у-координата первого элемента к-ой диагонали
 
-			while (numbArrI <= 9) // Пока не кончилась диагональ
+			while (numbArrI <= 9 && numbArrI > 0) // Пока не кончилась диагональ
 			{
 				xWbegin = numbArrI * pW, xWend = numbArrI * pW + pW;
 				yHbegin = numbArrJ * pH, yWend = numbArrJ * pH + pH;
+
+				//yHbegin = 0;
 
 				counter = 0;
 				for (unsigned int x = xWbegin; x < xWend; x++)

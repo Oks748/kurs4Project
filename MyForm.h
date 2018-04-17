@@ -44,6 +44,7 @@ namespace kursProject {
 
 	private: System::Windows::Forms::TextBox^  textBox1;
 	private: System::Windows::Forms::OpenFileDialog^  openFileDialog1;
+	private: System::Windows::Forms::DataGridView^  dataGridView1;
 
 	protected:
 
@@ -66,11 +67,13 @@ namespace kursProject {
 			this->btnClear = (gcnew System::Windows::Forms::Button());
 			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
 			this->openFileDialog1 = (gcnew System::Windows::Forms::OpenFileDialog());
+			this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// btnOverview
 			// 
-			this->btnOverview->Location = System::Drawing::Point(412, 10);
+			this->btnOverview->Location = System::Drawing::Point(675, 8);
 			this->btnOverview->Name = L"btnOverview";
 			this->btnOverview->Size = System::Drawing::Size(75, 23);
 			this->btnOverview->TabIndex = 0;
@@ -80,7 +83,7 @@ namespace kursProject {
 			// 
 			// btnDo
 			// 
-			this->btnDo->Location = System::Drawing::Point(412, 40);
+			this->btnDo->Location = System::Drawing::Point(675, 38);
 			this->btnDo->Name = L"btnDo";
 			this->btnDo->Size = System::Drawing::Size(75, 23);
 			this->btnDo->TabIndex = 1;
@@ -90,7 +93,7 @@ namespace kursProject {
 			// 
 			// btnAddNewPict
 			// 
-			this->btnAddNewPict->Location = System::Drawing::Point(412, 70);
+			this->btnAddNewPict->Location = System::Drawing::Point(675, 68);
 			this->btnAddNewPict->Name = L"btnAddNewPict";
 			this->btnAddNewPict->Size = System::Drawing::Size(75, 23);
 			this->btnAddNewPict->TabIndex = 2;
@@ -100,7 +103,7 @@ namespace kursProject {
 			// 
 			// btnClear
 			// 
-			this->btnClear->Location = System::Drawing::Point(412, 100);
+			this->btnClear->Location = System::Drawing::Point(675, 98);
 			this->btnClear->Name = L"btnClear";
 			this->btnClear->Size = System::Drawing::Size(75, 23);
 			this->btnClear->TabIndex = 3;
@@ -110,11 +113,11 @@ namespace kursProject {
 			// 
 			// textBox1
 			// 
-			this->textBox1->Location = System::Drawing::Point(12, 12);
+			this->textBox1->Location = System::Drawing::Point(501, 148);
 			this->textBox1->Multiline = true;
 			this->textBox1->Name = L"textBox1";
 			this->textBox1->ScrollBars = System::Windows::Forms::ScrollBars::Both;
-			this->textBox1->Size = System::Drawing::Size(383, 238);
+			this->textBox1->Size = System::Drawing::Size(249, 319);
 			this->textBox1->TabIndex = 4;
 			// 
 			// openFileDialog1
@@ -122,11 +125,28 @@ namespace kursProject {
 			this->openFileDialog1->FileName = L"openFileDialog1";
 			this->openFileDialog1->Multiselect = true;
 			// 
+			// dataGridView1
+			// 
+			this->dataGridView1->AllowUserToAddRows = false;
+			this->dataGridView1->BackgroundColor = System::Drawing::SystemColors::Window;
+			this->dataGridView1->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->dataGridView1->CellBorderStyle = System::Windows::Forms::DataGridViewCellBorderStyle::None;
+			this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->dataGridView1->ColumnHeadersVisible = false;
+			this->dataGridView1->Location = System::Drawing::Point(12, 12);
+			this->dataGridView1->Name = L"dataGridView1";
+			this->dataGridView1->ReadOnly = true;
+			this->dataGridView1->RowHeadersVisible = false;
+			this->dataGridView1->RowTemplate->Height = 150;
+			this->dataGridView1->Size = System::Drawing::Size(469, 455);
+			this->dataGridView1->TabIndex = 5;
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(499, 262);
+			this->ClientSize = System::Drawing::Size(762, 479);
+			this->Controls->Add(this->dataGridView1);
 			this->Controls->Add(this->textBox1);
 			this->Controls->Add(this->btnClear);
 			this->Controls->Add(this->btnAddNewPict);
@@ -134,6 +154,7 @@ namespace kursProject {
 			this->Controls->Add(this->btnOverview);
 			this->Name = L"MyForm";
 			this->Text = L"MyForm";
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
