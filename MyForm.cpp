@@ -35,11 +35,8 @@ System::Void kursProject::MyForm::btnOverview_Click(System::Object ^ sender, Sys
 
 			my.koord.push_back(vectP);
 			nnp++;
-
-			for(unsigned int i = 0; i < 100; i++)
-			{
-				textBox1->Text += "\t" + vectP.x[i];
-			}
+			Bitmap^ clear(bbb);
+			//for(unsigned int i = 0; i < 100; i++)	textBox1->Text += "\t" + vectP.x[i];
 		}
 		my.n = 100; //dimension
 		my.np = nnp; //number of point
@@ -52,17 +49,7 @@ System::Void kursProject::MyForm::btnDo_Click(System::Object ^ sender, System::E
 	{
 		my.k = Convert::ToInt32(textBox2->Text);
 		my.choosecenters();
-		textBox1->Text += "\r\n CentersNumb="+ my.k + "\r\n";
-		for (unsigned int j = 0; j < my.k; j++)
-		{
-			textBox1->Text += "numb" + (j+1) +"p";
-			for (unsigned int i = 0; i < 100; i++)
-			{
-				textBox1->Text +="\t"+ my.centry[j].x[i];
-			}
-			textBox1->Text += "\r\n";
-		}
-
+	
 		my.previouscentry.clear();
 		for (unsigned int g = 0; g < my.k; g++)
 		{
@@ -71,23 +58,35 @@ System::Void kursProject::MyForm::btnDo_Click(System::Object ^ sender, System::E
 		my.end = 0;
 		my.bindpoints();// -->kmeans
 		
-		textBox1->Text += "\r\n" + "---------------------------------------------";
+
+		textBox1->Text += "\r\n" + "---------------------------------------------\r\nРозподіл зображень\r\n";
+		for (unsigned int g = 0; g < my.kser.size(); g++)
+		{
+			textBox1->Text += "\r\n"+(g + 1) + " кластеру належить " + (my.kser[g].size()-1) + " зображень\r\n";
+			for (unsigned int j = 1; j < my.kser[g].size(); j++)
+			{
+				String^ str3 = gcnew String(my.kser[g][j].pathToFile.c_str());
+				textBox1->Text += "  " + Path::GetFileName(gcnew String(str3)) +"\r\n";
+			}
+		}	
+
+
+		/*textBox1->Text += "\r\n" + "---------------------------------------------";
 		for (unsigned int g = 0; g < my.kser.size(); g++)
 		{
 			textBox1->Text += "\r\n"+(g + 1) + " cluster " + my.kser[g].size() + " points\r\n";
-			for (unsigned int j = 0; j < my.kser[g].size(); j++)
+			for (unsigned int j = 1; j < my.kser[g].size(); j++)
 			{
 				String^ str3 = gcnew String(my.kser[g][j].pathToFile.c_str());
-				textBox1->Text += "  " + (g + 1) + "_" + (j + 1) + Path::GetFileName(gcnew String(str3)) +" p( ";
+				textBox1->Text += "  " + Path::GetFileName(gcnew String(str3)) +" p( ";
 				for (unsigned int i = 0; i < my.kser[g][j].x.size(); i++)
 				{
 					if (i == my.n - 1) textBox1->Text += my.kser[g][j].x[i];
 					else textBox1->Text += my.kser[g][j].x[i] + ", ";
 				}
-				if (j == 0) textBox1->Text += " center";
 				textBox1->Text += " )\r\n";
 			}
-		}
+		}*/
 	}
 }
 
@@ -107,7 +106,7 @@ System::Void kursProject::MyForm::btnAddNewPict_Click(System::Object ^ sender, S
 				dataGridView1->Rows->Add(Path::GetFileName(file), gcnew Bitmap(file));
 
 				Bitmap^ bbb = my.toGrayScale(gcnew Bitmap(file));
-				//dataGridView1->Rows->Add(Path::GetFileName(file), bbb);
+				dataGridView1->Rows->Add(Path::GetFileName(file), bbb);
 
 				my.pointkNN = my.vectorization(bbb);
 				msclr::interop::marshal_context context;
@@ -124,7 +123,7 @@ System::Void kursProject::MyForm::btnAddNewPict_Click(System::Object ^ sender, S
 				///////////////////////////////////////////////////////
 				my.kNearest();
 
-				textBox1->Text += ")\r\n Point dropped into " + (my.ki + 1) + " cluster";
+				textBox1->Text += ")\r\n Зображення потрапило в " + (my.ki + 1) + " кластер";
 				my.pointkNN.x.clear();
 			}
 			my.np += nnp;

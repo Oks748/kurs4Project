@@ -89,7 +89,7 @@ namespace kursProject {
 			this->btnOverview->Name = L"btnOverview";
 			this->btnOverview->Size = System::Drawing::Size(75, 23);
 			this->btnOverview->TabIndex = 0;
-			this->btnOverview->Text = L"Overview";
+			this->btnOverview->Text = L"Огляд";
 			this->btnOverview->UseVisualStyleBackColor = true;
 			this->btnOverview->Click += gcnew System::EventHandler(this, &MyForm::btnOverview_Click);
 			// 
@@ -101,7 +101,7 @@ namespace kursProject {
 			this->btnDo->Name = L"btnDo";
 			this->btnDo->Size = System::Drawing::Size(75, 23);
 			this->btnDo->TabIndex = 1;
-			this->btnDo->Text = L"Do";
+			this->btnDo->Text = L"Виконати";
 			this->btnDo->UseVisualStyleBackColor = true;
 			this->btnDo->Click += gcnew System::EventHandler(this, &MyForm::btnDo_Click);
 			// 
@@ -113,7 +113,7 @@ namespace kursProject {
 			this->btnAddNewPict->Name = L"btnAddNewPict";
 			this->btnAddNewPict->Size = System::Drawing::Size(75, 23);
 			this->btnAddNewPict->TabIndex = 2;
-			this->btnAddNewPict->Text = L"Add";
+			this->btnAddNewPict->Text = L"Додати";
 			this->btnAddNewPict->UseVisualStyleBackColor = true;
 			this->btnAddNewPict->Click += gcnew System::EventHandler(this, &MyForm::btnAddNewPict_Click);
 			// 
@@ -125,7 +125,7 @@ namespace kursProject {
 			this->btnClear->Name = L"btnClear";
 			this->btnClear->Size = System::Drawing::Size(75, 23);
 			this->btnClear->TabIndex = 3;
-			this->btnClear->Text = L"Clear";
+			this->btnClear->Text = L"Очистити";
 			this->btnClear->UseVisualStyleBackColor = true;
 			this->btnClear->Click += gcnew System::EventHandler(this, &MyForm::btnClear_Click);
 			// 
@@ -198,9 +198,9 @@ namespace kursProject {
 				static_cast<System::Byte>(204)));
 			this->label1->Location = System::Drawing::Point(491, 21);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(228, 16);
+			this->label1->Size = System::Drawing::Size(138, 16);
 			this->label1->TabIndex = 7;
-			this->label1->Text = L"How many clusters do you want\?";
+			this->label1->Text = L"Кількість кластерів";
 			// 
 			// MyForm
 			// 
@@ -216,7 +216,7 @@ namespace kursProject {
 			this->Controls->Add(this->btnDo);
 			this->Controls->Add(this->btnOverview);
 			this->Name = L"MyForm";
-			this->Text = L"MyForm";
+			this->Text = L"Кластеризація зображень";
 			this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->EndInit();
 			this->ResumeLayout(false);

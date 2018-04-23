@@ -19,8 +19,7 @@ Bitmap^ cluster::toGrayScale(Bitmap^ bitPict)
 
 			//find average
 			int avg = 0.299*r + 0.587*g + 0.114*b;
-
-
+			
 			if (avg < 128) avg = 0;
 			else avg = 255;
 
@@ -34,8 +33,7 @@ Bitmap^ cluster::toGrayScale(Bitmap^ bitPict)
 P cluster::vectorization(Bitmap^ pict)
 {
 	P vectP; //amount of koordinates in one vector
-	//vectP.x.resize(100);
-	
+		
 	unsigned int pictWidth = pict->Width; //borders--> must least some pixels in the end
 	unsigned int pictHeight = pict->Height;
 	//steps
@@ -46,16 +44,15 @@ P cluster::vectorization(Bitmap^ pict)
 	unsigned int numbArrI = 0, numbArrJ = 0; //numeracija aarrs
 	unsigned int counter = 0;
 	
-	// зполнение первой половины массива по диагонали, зигзагом, начиная
-	// слева и сверху, заканчивая  побочной диагональю
-	for (unsigned int diag = 0; diag < 10; diag++) // выполняем проход по диагоналям
+	//up left -> like pinetree to end nomain diag
+	for (unsigned int diag = 0; diag < 10; diag++) 
 	{
-		if (diag % 2 == 0) // по четным диагоналям
+		if (diag % 2 == 0) // parni diag
 		{
-			numbArrI = 0; // х-координата первого лемента массива на диагонали - diag
-			numbArrJ = diag; // у-координата элемента массива на диагонали - diag
+			numbArrI = 0; // i-coordinate of diag
+			numbArrJ = diag; //  j-coordinate of diag
 
-			while (numbArrJ >= 0 && numbArrJ < 10) // пока y-координата находится в верхней части диагонали
+			while (numbArrJ >= 0 && numbArrJ < 10) // while j is in up
 			{
 				xWbegin = numbArrI * pW, xWend = numbArrI * pW + pW;
 				yHbegin = numbArrJ * pH, yWend = numbArrJ * pH + pH;
@@ -63,21 +60,21 @@ P cluster::vectorization(Bitmap^ pict)
 				counter = 0;
 				for (unsigned int x = xWbegin; x < xWend; x++)
 					for (unsigned int y = yHbegin; y < yWend; y++)
-					{ //[x][y] |||| 0->BLACK   255->WHITE
+					{  
 						if (pict->GetPixel(x,y) == Color::FromArgb(0, 0, 0))
-							counter++; //if black pixel
+							counter++; //if black pixel  0->BLACK   255->WHITE
 					}
 				vectP.x.push_back(counter);
 				
-				numbArrI++;     // по горизонтали, смещаемся влево
-				numbArrJ--;    // по вертикали, смещаемся вниз------------------------&&&&&&&&&&&&&&&
+				numbArrI++;     // horizontal left
+				numbArrJ--;    // vertical down
 			}
 		}
-		else // по нечетным диагоналям
+		else // ne parni diag
 		{
-			numbArrI = diag; // х-координата элемента массива на диагонали - diag
-			numbArrJ = 0; // у-координата первого элемента массива на диагонали - diag
-			while (numbArrI >= 0 && numbArrI < 10) // пока x-координата находится в левой части диагонали
+			numbArrI = diag; // i-coordinate of diag
+			numbArrJ = 0; // j-coordinate of diag
+			while (numbArrI >= 0 && numbArrI < 10) // while i in left part of diag
 			{
 				xWbegin = numbArrI * pW, xWend = numbArrI * pW + pW;
 				yHbegin = numbArrJ * pH, yWend = numbArrJ * pH + pH;
@@ -85,32 +82,29 @@ P cluster::vectorization(Bitmap^ pict)
 				counter = 0;
 				for (unsigned int x = xWbegin; x < xWend; x++)
 					for (unsigned int y = yHbegin; y < yWend; y++)
-					{ //[x][y] |||| 0->BLACK   255->WHITE
+					{ 
 						if (pict->GetPixel(x, y) == Color::FromArgb(0, 0, 0))
-							counter++; //if black pixel
+							counter++; //if black pixel 0->BLACK   255->WHITE
 					}
 				vectP.x.push_back(counter);
 
-				numbArrI -= 1;  // по горизонтали, смещаемся вправо
-				numbArrJ += 1; // по вертикали, смещаемся вверх
+				numbArrI -= 1;  // horizontal right
+				numbArrJ += 1; // vertical up
 			}
 		}
-	} // конец for
-
-
-
-	  //**********************************************************************
-
-	  // заполнение второй половины массива по диагонали, зигзагом, начиная
-	  // слева и сверху, заканчивая  последним элементом массива
+	} // end for
+	
+	//**********************************************************************
+	
+	// left up to lastest element
 	for (unsigned int diag = 1; diag < 10; diag++)
 	{
-		if (diag % 2 == 0) // по четным диагоналям
+		if (diag % 2 == 0) // parni diag
 		{
-			numbArrI = 9; // х-координата первого элемента массива на диагонали - diag
-			numbArrJ = diag;  // у-координата элемента массива на диагонали - diag
+			numbArrI = 9; //j of diag
+			numbArrJ = diag;  // i of diag
 
-			while (numbArrJ <= 9 && numbArrJ > 0) // Пока не кончилась диагональ
+			while (numbArrJ <= 9 && numbArrJ > 0) // while end diag
 			{
 				xWbegin = numbArrI * pW, xWend = numbArrI * pW + pW;
 				yHbegin = numbArrJ * pH, yWend = numbArrJ * pH + pH;
@@ -118,42 +112,53 @@ P cluster::vectorization(Bitmap^ pict)
 				counter = 0;
 				for (unsigned int x = xWbegin; x < xWend; x++)
 					for (unsigned int y = yHbegin; y < yWend; y++)
-					{ //[x][y] |||| 0->BLACK   255->WHITE
+					{ 
 						if (pict->GetPixel(x, y) == Color::FromArgb(0, 0, 0))
-							counter++; //if black pixel
+							counter++; //if black pixel 0->BLACK   255->WHITE
 					}
 				vectP.x.push_back(counter);
-				numbArrI--; // по горизонтали, смещаемся влево
-				numbArrJ++; // по вертикали, смещаемся вниз
+				numbArrI--; // horizontal left
+				numbArrJ++; // vertical down
 			}
 		}
-		else // по не четным диагоналям
+		else // ne parni diag
 		{
-			numbArrI = diag; // х-координата первого элемента к-ой диагонали
-			numbArrJ = 9;  // у-координата первого элемента к-ой диагонали
+			numbArrI = diag; // i-coordinate of 1st k-diag
+			numbArrJ = 9;  // j-coordinate of 1st k-diag
 
-			while (numbArrI <= 9 && numbArrI > 0) // Пока не кончилась диагональ
+			while (numbArrI <= 9 && numbArrI > 0) // while end of diag
 			{
 				xWbegin = numbArrI * pW, xWend = numbArrI * pW + pW;
 				yHbegin = numbArrJ * pH, yWend = numbArrJ * pH + pH;
 
-				//yHbegin = 0;
-
 				counter = 0;
 				for (unsigned int x = xWbegin; x < xWend; x++)
 					for (unsigned int y = yHbegin; y < yWend; y++)
-					{ //[x][y] |||| 0->BLACK   255->WHITE
+					{ 
 						if (pict->GetPixel(x, y) == Color::FromArgb(0, 0, 0))
-							counter++; //if black pixel
+							counter++; //if black pixel  0->BLACK   255->WHITE
 					}
 				vectP.x.push_back(counter);
 
-				numbArrI++; // по горизонтали, смещаемся вправо
-				numbArrJ--; // по вертикали, смещаемся вверх
+				numbArrI++; // horizont right
+				numbArrJ--; // vertical up
 			}
-		} // конец if-else
-	} // конец цикла for (заполнение второй половины массива)
+		} // end if-else
+	} // end for
 
+	//----normalization-----
+	double max = vectP.x[0];
+	for (unsigned int i = 0; i < vectP.x.size(); i++)
+	{
+		if (vectP.x[i] > max) {
+			max = vectP.x[i];
+		}
+	}
+	for (unsigned int i = 0; i < vectP.x.size(); i++)
+	{
+		vectP.x[i] /= max;
+	}
+	
 	return vectP;
 }
 //-------------------vybir pochatkovyh centriv centrojidiv------------------
@@ -185,14 +190,14 @@ void cluster::choosecenters()
 	}//cykl po centrah	
 }
 //--------------------------------------------------------------------------
-float cluster::dosqrt(P ks, P kd) //koordynaty  v tochkah
+double cluster::dosqrt(P ks, P kd) //koordynaty  v tochkah
 {
-	float sum = 0;
+	double sum = 0;
 	for (unsigned int i = 0; i < n; i++)
 	{
 		sum = sum + (ks.x[i] - kd.x[i])*(ks.x[i] - kd.x[i]); //po koordynatam
 	}
-	return abs(sum);
+	return fabs(sum);
 }
 //------------------zv'jazka tochok | rozkyd po klasteram-------------------
 void cluster::bindpoints()
@@ -201,17 +206,17 @@ void cluster::bindpoints()
 	for (unsigned int g = 0; g < k; g++)
 	{
 		std::vector<P> pp;//perekydna komirka
-		pp.push_back(previouscentry[g]); //velychyna previouscentry????????
+		pp.push_back(previouscentry[g]); //velychyna previouscentry
 		kser.push_back(pp);
 		pp.clear();
 	}
 	for (unsigned int j = 0; j < koord.size(); j++)//po vsim tochkam
 	{
-		float dist = dosqrt(kser[0][0], koord[j]);
+		double dist = dosqrt(kser[0][0], koord[j]);
 		std::vector< P > *kh = &kser[0];// v 1st klaster
 		for (unsigned int g = 1; g < k; g++)//mozhe v inshyj klaster
 		{
-			float neardist = dosqrt(kser[g][0], koord[j]);
+			double neardist = dosqrt(kser[g][0], koord[j]);
 			if (dist > neardist)
 			{
 				dist = neardist;
@@ -229,12 +234,9 @@ void cluster::centermass()
 	{
 		std::vector<unsigned int> cm(n, 0); //dlja kozhnoji koordynaty n
 		for (unsigned int j = 0; j < kser[g].size(); j++)//po vsim tochkam pidklusteru
-		{
 			for (unsigned int i = 0; i < n; i++)
-			{
 				cm[i] = cm[i] + kser[g][j].x[i];
-			}
-		}
+		
 		P ppoint;
 		for (unsigned int i = 0; i < n; i++)
 		{
@@ -266,10 +268,8 @@ void cluster::centermass()
 //-------------algorithm k-nearest neighbours 1 tochka----------------------
 void cluster::kNearest()
 {
-	//vidstani.resize();
 	for (unsigned int g = 0; g < k; g++)//po vsim klasteram
 	{
-		
 		for (unsigned int j = 0; j < kser[g].size(); j++)//po vsim tochkam klasteru
 		{
 			vids pp;//perekydna komirka
@@ -292,7 +292,6 @@ void cluster::kNearest()
 				vidstani[j].gg = tmp2;
 
 			}
-
 
 	std::vector<unsigned int> lichylnyk(k, 0); //vid 0 do k
 	for (unsigned int d = 0; d < ksusidy; d++)
@@ -317,8 +316,6 @@ void cluster::kNearest()
 	vidstani.clear();
 }
 //----------------------------------------------------------------------------
-
-
 
 //--------------------------------------------------------------------------
 cluster::~cluster(){}
